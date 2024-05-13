@@ -47,13 +47,28 @@ outlier_cloud.colors = open3d.utility.Vector3dVector(colors[:, :3])
 open3d.visualization.draw_geometries([outlier_cloud])
 
 
-# ## BONUS CHALLENGE - CLUSTERING USING KDTREE AND KNN INSTEAD
-# pcd_tree = 
+# 3D Bounding Boxes
+obbs = []
+indexes = pd. Series(range(len(labels))).groupby(labels, sort=False).apply(list).tolist()
 
-# ## CHALLENGE 5 - BOUNDING BOXES IN 3D
-# bounding_boxes = 
+MAX_POINTS = 300
+MIN_POINTS = 40
 
-# ## CHALLENGE 6 - VISUALIZE THE FINAL RESULTS
-# list_of_visuals = 
+for i in range(0, len(indexes)):
+    nb_points = len(outlier_cloud.select_by_index(indexes[i]).points)
+    if (nb_points>MIN_POINTS and nb_points<MAX_POINTS):
+        sub_cloud = outlier_cloud.select_by_index(indexes[i])
+        obb = sub_cloud.get_axis_aligned_bounding_box()
+        obb.color = (0, 0, 1)
+        obbs.append(obb)
 
-# ## BONUS CHALLENGE 2 - MAKE IT WORK ON A VIDEO
+print(f"Number of Bounding Boxes calculated {len(obbs)}")
+
+list_of_visuals = []
+list_of_visuals.append(outlier_cloud)
+list_of_visuals.extend(obbs)
+list_of_visuals.append(inlier_cloud)
+
+print(type(pcd))
+print(type(list_of_visuals))
+open3d.visualization.draw_geometries(list_of_visuals)
