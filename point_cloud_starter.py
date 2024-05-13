@@ -30,18 +30,22 @@ inlier_cloud = pcd.select_by_index(inliers)
 inlier_cloud.paint_uniform_color([0, 1, 1])
 outlier_cloud = pcd.select_by_index(inliers, invert=True)
 outlier_cloud.paint_uniform_color([1, 0, 0])
-open3d.visualization.draw_geometries([inlier_cloud, outlier_cloud])
+# open3d.visualization.draw_geometries([inlier_cloud, outlier_cloud])
 
 elapsed_time = time.time() - start_time
 print("Elapsed time: {}".format(elapsed_time))
 
-
-# _, inliers = 
-
 # ## CHALLENGE 4 - CLUSTERING USING DBSCAN
-# labels = 
-# max_label= labels.max()
-# print(f"point cloud has {max_label + 1} clusters")
+with open3d.utility.VerbosityContextManager(open3d.utility.VerbosityLevel.Debug) as cm:
+    labels = np.array(outlier_cloud.cluster_dbscan(eps=0.45, min_points=7, print_progress=False))
+
+max_label = labels.max()
+print(f"point cloud has {max_label + 1} clusters")
+colors = plt.get_cmap("tab20")(labels/(max_label if max_label>0 else 1))
+colors[labels<0] = 0
+outlier_cloud.colors = open3d.utility.Vector3dVector(colors[:, :3])
+open3d.visualization.draw_geometries([outlier_cloud])
+
 
 # ## BONUS CHALLENGE - CLUSTERING USING KDTREE AND KNN INSTEAD
 # pcd_tree = 
