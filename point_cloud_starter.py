@@ -17,12 +17,26 @@ pcd = open3d.io.read_point_cloud('test_files/sdc.pcd')
 
 ## CHALLENGE 2 - VOXEL GRID DOWNSAMPLING
 print(f"Points before downsampling: {len(pcd.points)} ")
-pcd = pcd.voxel_down_sample(voxel_size=0.2)
+pcd = pcd.voxel_down_sample(voxel_size=0.1)
 print(f"Points after downsampling: {len(pcd.points)}")# DOWNSAMPLING
 
-open3d.visualization.draw_geometries([pcd])
+# open3d.visualization.draw_geometries([pcd])
 
-# ## CHALLENGE 3 - SEGMENTATION
+# ## CHALLENGE 3 - SEGMENTATION: Using RANSAC
+
+start_time = time.time()
+
+plane_model, inliers = pcd.segment_plane(distance_threshold=0.25, ransac_n=3, num_iterations=10)
+inlier_cloud = pcd.select_by_index(inliers)
+inlier_cloud.paint_uniform_color([0, 1, 1])
+outlier_cloud = pcd.select_by_index(inliers, invert=True)
+outlier_cloud.paint_uniform_color([1, 0, 0])
+open3d.visualization.draw_geometries([inlier_cloud, outlier_cloud])
+
+elapsed_time = time.time() - start_time
+print("Elapsed time: {}".format(elapsed_time))
+
+
 # _, inliers = 
 
 # ## CHALLENGE 4 - CLUSTERING USING DBSCAN
