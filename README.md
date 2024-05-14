@@ -73,31 +73,7 @@ open3d.visualization.draw_geometries([outlier_cloud])
 ## 6. Bounding Box using PCA
 Principal Component Analysis (PCA) can be used to compute an oriented bounding box for a point cloud. This process involves transforming the point cloud to align with its principal components, allowing for a tighter and more representative bounding box.
 
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
+```
 # 3D Bounding Boxes
 obbs = []
 indexes = pd. Series(range(len(labels))).groupby(labels, sort=False).apply(list).tolist()
@@ -123,10 +99,10 @@ list_of_visuals.append(inlier_cloud)
 print(type(pcd))
 print(type(list_of_visuals))
 open3d.visualization.draw_geometries(list_of_visuals)
+```
 
-Conclusion
+## 7. Conclusion
 In this project, we have created a code to process point cloud data using the Open3D Library. We perform voxel downsampling to reduce the number of point cloud that we need to process. Using RANSAC we identify the obstacle within the area. We segment, cluster, and build bounding boxes. The full code of this project can be find in this repository.
 
-Reference
+## Reference
 This tutorial is heavily based on thinkautonomous point cloud course and Open3D official documentation. The original repository and the can be found here.
-

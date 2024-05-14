@@ -1,4 +1,4 @@
-## IMPORT LIBRARIES
+## 1. Import Library
 import numpy as np
 import time
 import open3d
