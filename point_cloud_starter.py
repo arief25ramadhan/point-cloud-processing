@@ -7,19 +7,14 @@ import matplotlib.pyplot as plt
 
 ## USE http://www.open3d.org/docs/release/tutorial/Basic/
 
-## CHALLENGE 1 - OPEN A FILE OF YOUR CHOICE AND VISUALIZE THE POINT CLOUD
+## OPEN A FILE OF YOUR CHOICE AND VISUALIZE THE POINT CLOUD
 # The supported extension names are: pcd, ply, xyz, xyzrgb, xyzn, pts.
 pcd = open3d.io.read_point_cloud('test_files/sdc.pcd')
-
-## IF YOU HAVE PPTK INSTALLED, VISUALIZE USING PPTK
-#import pptk
-#v = pptk.viewer(pcd.points)
 
 ## CHALLENGE 2 - VOXEL GRID DOWNSAMPLING
 print(f"Points before downsampling: {len(pcd.points)} ")
 pcd = pcd.voxel_down_sample(voxel_size=0.1)
 print(f"Points after downsampling: {len(pcd.points)}")# DOWNSAMPLING
-
 # open3d.visualization.draw_geometries([pcd])
 
 # ## CHALLENGE 3 - SEGMENTATION: Using RANSAC (Random Sampling Consensus), to differentiate between ground and obstacles
@@ -45,7 +40,6 @@ colors = plt.get_cmap("tab20")(labels/(max_label if max_label>0 else 1))
 colors[labels<0] = 0
 outlier_cloud.colors = open3d.utility.Vector3dVector(colors[:, :3])
 open3d.visualization.draw_geometries([outlier_cloud])
-
 
 # 3D Bounding Boxes
 obbs = []
