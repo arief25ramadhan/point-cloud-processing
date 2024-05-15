@@ -14,7 +14,7 @@ pcd = open3d.io.read_point_cloud('test_files/sdc.pcd')
 ## CHALLENGE 2 - VOXEL GRID DOWNSAMPLING
 print(f"Points before downsampling: {len(pcd.points)} ")
 pcd = pcd.voxel_down_sample(voxel_size=0.1)
-print(f"Points after downsampling: {len(pcd.points)}")# DOWNSAMPLING
+print(f"Points after downsampling: {len(pcd.points)}")
 # open3d.visualization.draw_geometries([pcd])
 
 # ## CHALLENGE 3 - SEGMENTATION: Using RANSAC (Random Sampling Consensus), to differentiate between ground and obstacles
