@@ -5,12 +5,14 @@ Let's look at the data that we want to process, which is displayed by Figure 1. 
 
 <p align="center">
   <img src="assets/input.png" width="500" title="hover text">
+  <br>Figure 1 - Input Data<br>
 </p>
 
 We will create 3D bounding boxes around each obstacle. These bounding boxes, as shown by Figure 2, is the desired output of our point cloud processing pipeline. 
 
 <p align="center">
   <img src="assets/output.png" width="500" title="hover text">
+  <br>Figure 2 - Desired Output<br>
 </p>
 
 In summary, there are five steps in our pipeline:
@@ -40,23 +42,25 @@ import matplotlib.pyplot as plt
 pcd = open3d.io.read_point_cloud('test_files/sdc.pcd')
 ```
 
-## 2. Voxel down sample
-Voxel downsampling is a technique used to reduce the number of points in a point cloud by averaging points within a 3D grid of fixed-size cubes, called voxels. Each voxel replaces all the points it contains with a single representative point, typically the centroid. This reduces the data size while preserving the overall structure and features of the point cloud, making it more efficient for processing and analysis.
+## 2. Voxel Downsample
+Voxel downsampling is used to reduce the number of points in a point cloud by averaging points within a 3D grid of fixed-size cubes, called voxels. Each voxel replaces all the points it contains with a single representative point, typically the centroid. This reduces the data size while preserving the overall structure and features of the point cloud, making it more efficient for processing and analysis.
 
 ```
 # 2. Voxel downsampling
 print(f"Points before downsampling: {len(pcd.points)} ")
-pcd = pcd.voxel_down_sample(voxel_size=0.1)
+pcd = pcd.voxel_down_sample(voxel_size=0.2)
 print(f"Points after downsampling: {len(pcd.points)}")
 # open3d.visualization.draw_geometries([pcd])
 ```
 
+Figure 3 below shows the pointcloud after we downsample it for 20% (less 20% from original number of points, contains 80% from original points).
 <p align="center">
   <img src="assets/voxel.png" width="500" title="hover text">
+  <br>Figure 3 - Point Cloud Data after Voxel Downsampling<br>
 </p>
 
 
-## 3. Segmentation using RANSAC
+## 3. Segmentation Using RANSAC
 RANSAC (Random Sample Consensus) is used to estimate the parameters of a mathematical model from data. In our case, we use RANSAC to distinguish the road and the objects above it.
 ```
 # 3. RANSAC Segmentation to distinguish the largest plane (in this case the ground/road) from objects above it
@@ -69,12 +73,15 @@ outlier_cloud = pcd.select_by_index(inliers, invert=True)
 outlier_cloud.paint_uniform_color([1, 0, 0])
 ```
 
+Figure 4 shows the point cloud after segmentation. We can see that the road and the objects above has different colors.
+
 <p align="center">
   <img src="assets/ransac.png" width="500" title="hover text">
+  <br>Figure 3 - Point Cloud Data after Segmentation<br>
 </p>
 
 
-## 4. Clustering using DBSCAN
+## 4. Clustering Using DBSCAN
 DBSCAN (Density-Based Spatial Clustering of Applications with Noise) is a clustering algorithm that groups points based on density. It identifies core points as those having a minimum number of neighbors (MinPts) within a specified distance (epsilon, ε). Clusters are formed by connecting core points and their neighbors, including any points reachable from core points. Points that are not reachable from any core point are classified as noise (outliers).
 
 Key parameters include epsilon, the maximum distance to consider points as neighbors, and MinPts, the minimum number of points to form a dense region. DBSCAN is advantageous for finding clusters of arbitrary shapes and effectively handling noise and outliers. This makes it useful in fields like geospatial analysis and anomaly detection due to its robustness and minimal parameter requirements.
@@ -93,9 +100,11 @@ colors[labels<0] = 0
 outlier_cloud.colors = open3d.utility.Vector3dVector(colors[:, :3])
 # open3d.visualization.draw_geometries([outlier_cloud])
 ```
+Figure 4 displays the point cloud after we cluster the objects. Each object is colored differently to indicate different obstacles.
 
 <p align="center">
   <img src="assets/dbscan.png" width="500" title="hover text">
+  <br>Figure 4 - Point Cloud Data After DBSCAN Clustering<br>
 </p>
 
 
@@ -135,10 +144,11 @@ open3d.visualization.draw_geometries(list_of_visuals)
 
 <p align="center">
   <img src="assets/output.png" width="500" title="hover text">
+  <br>Figure 5 - Point Cloud with Bounding Boxes<br>
 </p>
 
 ## 6. Conclusion
 In this project, we have process point cloud data using the Open3D Library. We perform voxel downsampling to reduce the number of point cloud that we need to process. We use RANSAC to identify the road from the objects, DBSCAN to cluster obstacles individually, and draw bounding boxes for each objects.
 
 ## Reference
-This project is heavily based on Think Autonomous [Point Clouds Conqueror Course](https://courses.thinkautonomous.ai/point-clouds) and [Open3D official documentation](https://www.open3d.org/docs/release/getting_started.html). Additional references include [Think Autonomous Point Cloud Starter Code] (https://github.com/Jeremy26/point_cloud_course) and [Open3D Official Repository](https://github.com/isl-org/Open3D).
+This project is heavily based on Think Autonomous [Point Clouds Conqueror Course](https://courses.thinkautonomous.ai/point-clouds) and [Open3D official documentation](https://www.open3d.org/docs/release/getting_started.html). Additional references include [Think Autonomous Point Cloud Starter Code](https://github.com/Jeremy26/point_cloud_course) and [Open3D Official Repository](https://github.com/isl-org/Open3D).
