@@ -1,31 +1,30 @@
-## 1. Import Library
+## 0. Import Library
 import numpy as np
 import time
 import open3d
 import pandas as pd
 import matplotlib.pyplot as plt
 
-## USE http://www.open3d.org/docs/release/tutorial/Basic/
-
-## OPEN A FILE OF YOUR CHOICE AND VISUALIZE THE POINT CLOUD
-# The supported extension names are: pcd, ply, xyz, xyzrgb, xyzn, pts.
+# 1. Load Data
 pcd = open3d.io.read_point_cloud('test_files/sdc.pcd')
 
-## CHALLENGE 2 - VOXEL GRID DOWNSAMPLING
+# 2. Voxel downsampling
 print(f"Points before downsampling: {len(pcd.points)} ")
 pcd = pcd.voxel_down_sample(voxel_size=0.1)
 print(f"Points after downsampling: {len(pcd.points)}")
 # open3d.visualization.draw_geometries([pcd])
 
-# ## CHALLENGE 3 - SEGMENTATION: Using RANSAC (Random Sampling Consensus), to differentiate between ground and obstacles
+# 3. RANSAC Segmentation
 plane_model, inliers = pcd.segment_plane(distance_threshold=0.3, ransac_n=3, num_iterations=150)
+## Identify inlier points
 inlier_cloud = pcd.select_by_index(inliers)
 inlier_cloud.paint_uniform_color([0, 1, 1])
+## Identify outlier points
 outlier_cloud = pcd.select_by_index(inliers, invert=True)
 outlier_cloud.paint_uniform_color([1, 0, 0])
 # open3d.visualization.draw_geometries([inlier_cloud, outlier_cloud])
 
-# ## CHALLENGE 4 - CLUSTERING USING DBSCAN
+# 4. Clustering using DBSCAN
 with open3d.utility.VerbosityContextManager(open3d.utility.VerbosityLevel.Debug) as cm:
     labels = np.array(outlier_cloud.cluster_dbscan(eps=0.45, min_points=7, print_progress=False))
 
@@ -36,9 +35,9 @@ colors[labels<0] = 0
 outlier_cloud.colors = open3d.utility.Vector3dVector(colors[:, :3])
 open3d.visualization.draw_geometries([outlier_cloud])
 
-# 3D Bounding Boxes
+# 5. Generate 3D Bounding Boxes
 obbs = []
-indexes = pd. Series(range(len(labels))).groupby(labels, sort=False).apply(list).tolist()
+indexes = pd.Series(range(len(labels))).groupby(labels, sort=False).apply(list).tolist()
 
 MAX_POINTS = 300
 MIN_POINTS = 40
