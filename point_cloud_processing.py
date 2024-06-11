@@ -7,10 +7,11 @@ import matplotlib.pyplot as plt
 
 # 1. Load Data
 pcd = open3d.io.read_point_cloud('test_files/sdc.pcd')
+# open3d.visualization.draw_geometries([pcd])
 
 # 2. Voxel downsampling
 print(f"Points before downsampling: {len(pcd.points)} ")
-pcd = pcd.voxel_down_sample(voxel_size=0.1)
+pcd = pcd.voxel_down_sample(voxel_size=0.2)
 print(f"Points after downsampling: {len(pcd.points)}")
 # open3d.visualization.draw_geometries([pcd])
 
@@ -35,7 +36,7 @@ colors = plt.get_cmap("tab20")(labels/(max_label if max_label>0 else 1))
 colors[labels<0] = 0
 ## Colorized objects on the road
 outlier_cloud.colors = open3d.utility.Vector3dVector(colors[:, :3])
-open3d.visualization.draw_geometries([outlier_cloud])
+# open3d.visualization.draw_geometries([outlier_cloud])
 
 # 5. Generate 3D Bounding Boxes
 obbs = []

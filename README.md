@@ -3,7 +3,15 @@ We are working with point clouds (again). Point clouds, collections of 3D data a
 
 Let's look at the data that we want to process, which is displayed by Figure 1. Imagine a scenario where your self-driving car has scanned its surroundings. The resulting point cloud represents this data, and our goal is to interpret it by identifying obstacles in the environment.
 
+<p align="center">
+  <img src="assets/input.png" width="500" title="hover text">
+</p>
+
 We will create 3D bounding boxes around each obstacle. These bounding boxes, as shown by Figure 2, is the desired output of our point cloud processing pipeline. 
+
+<p align="center">
+  <img src="assets/output.png" width="500" title="hover text">
+</p>
 
 In summary, there are five steps in our pipeline:
 
@@ -43,6 +51,11 @@ print(f"Points after downsampling: {len(pcd.points)}")
 # open3d.visualization.draw_geometries([pcd])
 ```
 
+<p align="center">
+  <img src="assets/voxel.png" width="500" title="hover text">
+</p>
+
+
 ## 3. Segmentation using RANSAC
 RANSAC (Random Sample Consensus) is used to estimate the parameters of a mathematical model from data. In our case, we use RANSAC to distinguish the road and the objects above it.
 ```
@@ -55,6 +68,11 @@ inlier_cloud.paint_uniform_color([0, 1, 1])
 outlier_cloud = pcd.select_by_index(inliers, invert=True)
 outlier_cloud.paint_uniform_color([1, 0, 0])
 ```
+
+<p align="center">
+  <img src="assets/ransac.png" width="500" title="hover text">
+</p>
+
 
 ## 4. Clustering using DBSCAN
 DBSCAN (Density-Based Spatial Clustering of Applications with Noise) is a clustering algorithm that groups points based on density. It identifies core points as those having a minimum number of neighbors (MinPts) within a specified distance (epsilon, ε). Clusters are formed by connecting core points and their neighbors, including any points reachable from core points. Points that are not reachable from any core point are classified as noise (outliers).
@@ -75,6 +93,11 @@ colors[labels<0] = 0
 outlier_cloud.colors = open3d.utility.Vector3dVector(colors[:, :3])
 # open3d.visualization.draw_geometries([outlier_cloud])
 ```
+
+<p align="center">
+  <img src="assets/dbscan.png" width="500" title="hover text">
+</p>
+
 
 ## 5. Generate 3D Bounding Boxes of Objects
 Next, we will draw the bounding boxes of each individual objects/obstacles.
@@ -109,6 +132,10 @@ print(type(pcd))
 print(type(list_of_visuals))
 open3d.visualization.draw_geometries(list_of_visuals)
 ```
+
+<p align="center">
+  <img src="assets/output.png" width="500" title="hover text">
+</p>
 
 ## 6. Conclusion
 In this project, we have process point cloud data using the Open3D Library. We perform voxel downsampling to reduce the number of point cloud that we need to process. We use RANSAC to identify the road from the objects, DBSCAN to cluster obstacles individually, and draw bounding boxes for each objects.
