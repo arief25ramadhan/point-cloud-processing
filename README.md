@@ -53,7 +53,7 @@ print(f"Points after downsampling: {len(pcd.points)}")
 # open3d.visualization.draw_geometries([pcd])
 ```
 
-Figure 3 below shows the pointcloud after we downsample it for 20% (less 20% from original number of points, contains 80% from original points).
+Figure 3 below shows the pointcloud after we downsample it for 20% (keeping 80% from the original points).
 <p align="center">
   <img src="assets/voxel.png" width="500" title="hover text">
   <br>Figure 3 - Point Cloud Data after Voxel Downsampling<br>
@@ -77,7 +77,7 @@ Figure 4 shows the point cloud after segmentation. We can see that the road and 
 
 <p align="center">
   <img src="assets/ransac.png" width="500" title="hover text">
-  <br>Figure 3 - Point Cloud Data after Segmentation<br>
+  <br>Figure 4 - Point Cloud Data after Segmentation<br>
 </p>
 
 
@@ -100,11 +100,11 @@ colors[labels<0] = 0
 outlier_cloud.colors = open3d.utility.Vector3dVector(colors[:, :3])
 # open3d.visualization.draw_geometries([outlier_cloud])
 ```
-Figure 4 displays the point cloud after we cluster the objects. Each object is colored differently to indicate different obstacles.
+Figure 5 displays the point cloud after we cluster the objects. Each object is colored differently to indicate different obstacles.
 
 <p align="center">
   <img src="assets/dbscan.png" width="500" title="hover text">
-  <br>Figure 4 - Point Cloud Data After DBSCAN Clustering<br>
+  <br>Figure 5 - Point Cloud Data After DBSCAN Clustering<br>
 </p>
 
 
@@ -144,7 +144,7 @@ open3d.visualization.draw_geometries(list_of_visuals)
 
 <p align="center">
   <img src="assets/output.png" width="500" title="hover text">
-  <br>Figure 5 - Point Cloud with Bounding Boxes<br>
+  <br>Figure 6 - Point Cloud with Bounding Boxes<br>
 </p>
 
 ## 6. Conclusion
