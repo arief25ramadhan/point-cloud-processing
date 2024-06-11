@@ -1,9 +1,11 @@
 # Point Cloud Processing using Open3D
 We are working with point clouds (again). Point clouds, collections of 3D data acquired through LiDAR, are a crucial data type in self-driving car. In this project, we will learn how to process point clouds using the Open3D library.
 
-Figure 1 displays the data we'll be processing. Imagine a scenario where your self-driving car has scanned its surroundings. The resulting point cloud represents this data, and our goal is to interpret it by identifying obstacles in the environment.
+Let's look at the data that we want to process, which is displayed by Figure 1. Imagine a scenario where your self-driving car has scanned its surroundings. The resulting point cloud represents this data, and our goal is to interpret it by identifying obstacles in the environment.
 
-We will create 3D bounding boxes around each obstacle. Figure 2 illustrates the desired output of our point cloud processing pipeline. In summary, there are five steps in our pipeline:
+We will create 3D bounding boxes around each obstacle. These bounding boxes, as shown by Figure 2, is the desired output of our point cloud processing pipeline. 
+
+In summary, there are five steps in our pipeline:
 
 - Load point cloud data
 - Voxel down sample the data
