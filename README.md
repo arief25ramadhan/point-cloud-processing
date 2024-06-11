@@ -18,7 +18,7 @@ We will create 3D bounding boxes around each obstacle. These bounding boxes, as 
 In summary, there are five steps in our pipeline:
 
 - Load point cloud data
-- Voxel down sample the data
+- Voxel downsample the data
 - Distinguish the road and the obstacles using RANSAC
 - Identify individual obstacle through DBSCAN clustering
 - Generate 3D bounding boxes of the obstacles
